@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 set -euo pipefail
 
 ROOT="${ROOT:-$(cd "$(dirname "$0")/.." && pwd)}"
@@ -6,7 +6,7 @@ OS="$("$ROOT/scripts/helpers/os_detect")"
 
 echo "[bootstrap] OS=$OS"
 
-# antidote
+# antidote (zsh plugin manager) - works on both
 if [[ ! -d "$HOME/.antidote" ]]; then
   echo "[bootstrap] Installing antidote..."
   git clone --depth=1 https://github.com/mattmc3/antidote.git "$HOME/.antidote"
@@ -14,21 +14,29 @@ else
   echo "[bootstrap] antidote already installed"
 fi
 
-# tmux (gpakosz/.tmux)
-if [[ ! -d "$HOME/.tmux" ]]; then
-  echo "[bootstrap] Installing tmux config..."
-  git clone https://github.com/gpakosz/.tmux.git "$HOME/.tmux"
-  ln -sf "$HOME/.tmux/.tmux.conf" "$HOME/.tmux.conf"
+# tmux plugin manager (TPM) - works on both
+if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
+  echo "[bootstrap] Installing tmux TPM..."
+  mkdir -p "$HOME/.tmux/plugins"
+  git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 else
-  echo "[bootstrap] tmux config already installed"
+  echo "[bootstrap] TPM already installed"
 fi
 
-# bun (requires unzip)
+# bun - works on both
 if [[ ! -d "$HOME/.bun" ]]; then
   echo "[bootstrap] Installing bun..."
   if ! command -v unzip >/dev/null 2>&1; then
-    echo "[bootstrap] Installing unzip (bun dependency)..."
-    sudo pacman -S --needed --noconfirm unzip
+    echo "[bootstrap] Installing unzip..."
+    if [[ "$OS" == "mac" ]]; then
+      brew install unzip
+    elif [[ "$OS" == "linux" ]]; then
+      if command -v pacman >/dev/null 2>&1; then
+        sudo pacman -S --needed --noconfirm unzip 2>/dev/null || true
+      elif command -v apt >/dev/null 2>&1; then
+        sudo apt-get install -y unzip 2>/dev/null || true
+      fi
+    fi
   fi
   curl -fsSL https://bun.sh/install | bash
 else

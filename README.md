@@ -12,7 +12,7 @@ cd ~/src/dotfiles
 ## Modes
 ```bash
 ./setup              # full setup (default)
-./setup bootstrap    # antidote + bun only
+./setup bootstrap    # tools only (antidote, TPM, bun)
 ./setup packages     # install packages only
 ./setup dotfiles     # stow symlinks only
 ```
@@ -22,24 +22,29 @@ cd ~/src/dotfiles
 dotfiles/
 |-- setup                  # entrypoint
 |-- packages/
-|   |-- arch.pacman.txt    # pacman packages
-|   |-- arch.aur.txt       # AUR packages
-|   +-- mac.brew.txt       # homebrew packages
+|   |-- arch.pacman.txt    # pacman packages (Linux)
+|   |-- arch.aur.txt       # AUR packages (Linux)
+|   +-- mac.brew.txt       # homebrew packages (macOS)
 |-- scripts/
-|   |-- bootstrap          # antidote, bun
-|   |-- install_packages   # pacman / brew
+|   |-- bootstrap          # antidote, TPM, bun
+|   |-- install_packages   # pacman/brew/AUR
 |   |-- install_dotfiles   # stow symlinks
 |   +-- helpers/
-|       +-- os_detect      # prints: arch | mac | linux
+|       +-- os_detect      # prints: linux | mac
 +-- stow/
     |-- common/            # applied on all OS
-    |-- arch/              # arch only
-    +-- mac/               # mac only
+    |-- linux/             # Linux-specific
+    +-- mac/              # macOS-specific
 ```
+
+## OS Detection
+
+- **mac**: macOS (Darwin)
+- **linux**: Any Linux distribution (Arch, Debian, Ubuntu, etc.)
 
 ## Adding a new dotfile
 
-1. Mirror the path inside `stow/common/` (or `arch/`/`mac/` if OS-specific)
+1. Mirror the path inside `stow/common/` (or `linux/`/`mac/` if OS-specific)
 2. Add the package to the relevant package list if needed
 3. Run `./setup dotfiles`
 

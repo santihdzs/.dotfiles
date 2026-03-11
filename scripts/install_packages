@@ -1,22 +1,50 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 set -euo pipefail
 
 OS="$(scripts/helpers/os_detect)"
 echo "[install_packages] OS=$OS"
 
-if [[ "$OS" == "arch" ]]; then
-  pkgs="$(grep -vE '^\s*($|#)' packages/arch.pacman.txt | tr '\n' ' ')"
-  sudo pacman -S --needed $pkgs
+# Linux (Arch-based)
+if [[ "$OS" == "linux" ]]; then
+  # Install pacman packages
+  if [[ -f packages/arch.pacman.txt ]]; then
+    pkgs="$(grep -vE '^\s*($|#)' packages/arch.pacman.txt | tr '\n' ' ')"
+    if [[ -n "$pkgs" ]]; then
+      echo "[install_packages] Installing pacman packages..."
+      sudo pacman -S --needed --noconfirm $pkgs
+    fi
+  fi
+
+  # Install AUR packages (requires yay or paru)
+  if [[ -f packages/arch.aur.txt ]]; then
+    aur_pkgs="$(grep -vE '^\s*($|#)' packages/arch.aur.txt | tr '\n' ' ')"
+    if [[ -n "$aur_pkgs" ]]; then
+      echo "[install_packages] Installing AUR packages..."
+      if command -v yay >/dev/null 2>&1; then
+        yay -S --needed --noconfirm $aur_pkgs
+      elif command -v paru >/dev/null 2>&1; then
+        paru -S --needed --noconfirm $aur_pkgs
+      else
+        echo "[install_packages] AUR helper (yay/paru) not found. Skipping AUR packages."
+      fi
+    fi
+  fi
   exit 0
 fi
 
+# macOS
 if [[ "$OS" == "mac" ]]; then
   if ! command -v brew >/dev/null 2>&1; then
-    echo "Homebrew not found. Install it first, then re-run."
+    echo "Homebrew not found. Install it first: https://brew.sh"
     exit 1
   fi
-  pkgs="$(grep -vE '^\s*($|#)' packages/mac.brew.txt | tr '\n' ' ')"
-  brew install $pkgs
+  if [[ -f packages/mac.brew.txt ]]; then
+    pkgs="$(grep -vE '^\s*($|#)' packages/mac.brew.txt | tr '\n' ' ')"
+    if [[ -n "$pkgs" ]]; then
+      echo "[install_packages] Installing Homebrew packages..."
+      brew install $pkgs
+    fi
+  fi
   exit 0
 fi
 

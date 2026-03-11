@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 set -euo pipefail
 
 case "$(uname -s)" in
@@ -6,11 +6,7 @@ case "$(uname -s)" in
     echo "mac"
     ;;
   Linux)
-    if [[ -f /etc/arch-release ]]; then
-      echo "arch"
-    else
-      echo "linux"
-    fi
+    echo "linux"
     ;;
   *)
     echo "unknown"

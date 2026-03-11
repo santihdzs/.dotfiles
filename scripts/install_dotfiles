@@ -11,21 +11,24 @@ stow_dir() {
   local dir="$1"
   [[ -d "$dir" ]] || return 0
 
-  local pkgs=($(find "$dir" -maxdepth 1 -type d -exec basename {} \; | tail -n +2 | sort))
+  local pkgs=($(find "$dir" -maxdepth 1 -type d -exec basename {} \; 2>/dev/null | tail -n +2 | sort))
   [[ ${#pkgs[@]} -eq 0 ]] && return 0
 
   for pkg in "${pkgs[@]}"; do
     echo "[install_dotfiles] -> $pkg (from $dir)"
 
-    while IFS= read -r rel; do
-      rel="${rel#./}"
-      target="$HOME/$rel"
+    # Backup existing files before stowing
+    for file in "$dir/$pkg"/.* "$dir/$pkg"/*; do
+      [[ -e "$file" ]] || continue
+      local rel="${file#$dir/$pkg/}"
+      [[ "$rel" == "." || "$rel" == ".." ]] && continue
+      local target="$HOME/$rel"
       if [[ -e "$target" && ! -L "$target" ]]; then
         mkdir -p "$BACKUP_DIR/$(dirname "$rel")"
         mv "$target" "$BACKUP_DIR/$rel"
         echo "[install_dotfiles]    backed up: $rel"
       fi
-    done < <(cd "$dir/$pkg" && find . -mindepth 1 -not -type d -print)
+    done
 
     stow -d "$dir" -t "$HOME" "$pkg"
   done
@@ -36,10 +39,12 @@ echo "[install_dotfiles] Backup dir: $BACKUP_DIR"
 
 cd "$ROOT"
 
+# Common (works on all OS)
 stow_dir "$ROOT/stow/common"
 
-if [[ "$OS" == "arch" ]]; then
-  stow_dir "$ROOT/stow/arch"
+# OS-specific
+if [[ "$OS" == "linux" ]]; then
+  stow_dir "$ROOT/stow/linux"
 elif [[ "$OS" == "mac" ]]; then
   stow_dir "$ROOT/stow/mac"
 fi
