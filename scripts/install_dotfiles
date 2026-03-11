@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 set -euo pipefail
 
 ROOT="${ROOT:-$(cd "$(dirname "$0")/.." && pwd)}"
@@ -11,8 +11,7 @@ stow_dir() {
   local dir="$1"
   [[ -d "$dir" ]] || return 0
 
-  local pkgs
-  mapfile -t pkgs < <(find "$dir" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort)
+  local pkgs=($(find "$dir" -maxdepth 1 -type d -exec basename {} \; | tail -n +2 | sort))
   [[ ${#pkgs[@]} -eq 0 ]] && return 0
 
   for pkg in "${pkgs[@]}"; do
@@ -20,7 +19,7 @@ stow_dir() {
 
     while IFS= read -r rel; do
       rel="${rel#./}"
-      local target="$HOME/$rel"
+      target="$HOME/$rel"
       if [[ -e "$target" && ! -L "$target" ]]; then
         mkdir -p "$BACKUP_DIR/$(dirname "$rel")"
         mv "$target" "$BACKUP_DIR/$rel"
