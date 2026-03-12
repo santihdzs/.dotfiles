@@ -1,5 +1,6 @@
 # Antidote plugins list
-# Format: user/repo or user/repo path:path
+# Install: brew install antidote
+# After editing, run: antidote update
 
 # Oh My Zsh plugins
 getantidote/use-omz
@@ -10,4 +11,4 @@ ohmyzsh path:plugins/command-not-found
 # Zsh plugins
 zsh-users/zsh-completions
 zsh-users/zsh-autosuggestions
-zsh-users/zsh-syntax-highlighting
+zdharma-continuum/fast-syntax-highlighting
