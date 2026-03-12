@@ -39,8 +39,3 @@ if [ -s "$HOME/.bun/_bun" ]; then
 fi
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-
-# Hyprland autostart
-if uwsm check may-start; then
-  exec uwsm start hyprland.desktop
-fi
