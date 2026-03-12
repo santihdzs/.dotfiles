@@ -8,10 +8,11 @@ neovim
 tmux
 
 # Zsh plugins & prompt
-antidote
 oh-my-posh
 fzf
 zoxide
+zsh-autosuggestions
+zsh-fast-syntax-highlighting
 
 # Languages & runtimes
 bun

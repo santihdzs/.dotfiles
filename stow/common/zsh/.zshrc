@@ -10,26 +10,21 @@ export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 # Enable autocd (typing .. or ... auto-cds)
 setopt autocd
 
-# Antidote plugin manager (must load before compinit)
-if [ -f "$HOME/.antidote/antidote.zsh" ]; then
-  source "$HOME/.antidote/antidote.zsh"
-fi
-
-# Load plugins from static file
-zsh_plugins=${ZDOTDIR:-$HOME}/.zsh_plugins
-if [[ ! ${zsh_plugins}.zsh -nt ${zsh_plugins}.txt ]]; then
-  (
-    source $HOME/.antidote/antidote.zsh
-    antidote bundle <${zsh_plugins}.txt >${zsh_plugins}.zsh
-  )
-fi
-source ${zsh_plugins}.zsh
-
-# Zsh completions (load AFTER plugins)
+# Zsh completions
 autoload -Uz compinit
 compinit -d "${XDG_CACHE_HOME}/zsh/zcompdump"
 
-# Completion styling (case-insensitive, like octavio)
+# Syntax highlighting (MUST load before autosuggestions)
+if [ -f "$(brew --prefix)/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh" ]; then
+  source $(brew --prefix)/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+fi
+
+# Autosuggestions
+if [ -f "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
+  source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
+
+# Completion styling (case-insensitive)
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu no
@@ -38,7 +33,7 @@ zstyle ':completion:*' special-dirs true
 # Zoxide (smarter cd)
 eval "$(zoxide init zsh)"
 
-# Oh My Posh - use built-in theme (custom zen.toml has path issues with stow)
+# Oh My Posh
 if command -v oh-my-posh >/dev/null 2>&1; then
   eval "$(oh-my-posh init zsh --config=bubblesextra)"
 fi
