@@ -2,52 +2,58 @@
 
 Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
-## Usage
+## Quick Start
 ```bash
 git clone https://github.com/santihdzs/dotfiles ~/.dotfiles
 cd ~/.dotfiles
 ./setup
 ```
 
-## Modes
+## Available Modes
 ```bash
-./setup              # full setup (default)
-./setup bootstrap    # tools only (TPM, bun)
-./setup packages     # install packages only
-./setup dotfiles    # stow symlinks only
+./setup              # full setup (bootstrap + packages + dotfiles)
+./setup bootstrap    # install tools only (TPM, bun)
+./setup packages     # install system packages only
+./setup dotfiles     # create stow symlinks only
 ```
 
-## Structure
+## Directory Structure
+
 ```
 dotfiles/
-|-- setup                  # entrypoint
-|-- packages/
-|   |-- arch.pacman.txt   # pacman packages (Linux)
-|   |-- arch.aur.txt      # AUR packages (Linux)
-|   +-- mac.brew.txt      # homebrew packages (macOS)
+|-- setup                  # Main entry point
+|-- packages/              # Package lists
+|   |-- pacman.txt        # Pacman packages (Linux)
+|   |-- aur.txt           # AUR packages (Linux)
+|   +-- mac.brew.txt     # Homebrew packages (macOS)
 |-- scripts/
-|   |-- bootstrap          # TPM, bun
-|   |-- install_packages   # pacman/brew/AUR
-|   |-- install_dotfiles   # stow symlinks
+|   |-- bootstrap          # Install tools (TPM, bun)
+|   |-- install_packages  # Install system packages
+|   |-- install_dotfiles  # Create stow symlinks
 |   +-- helpers/
-|       +-- os_detect     # prints: linux | mac
-+-- stow/
-    |-- common/           # applied on all OS
+|       +-- os_detect    # Detect OS: linux | mac
++-- stow/                 # Dotfiles to symlink
+    |-- common/           # Shared across all OS
     |-- linux/            # Linux-specific
     +-- mac/             # macOS-specific
 ```
 
+## What's in stow/common/
+
+- **zsh/.zshrc** - Zsh config (autosuggestions, syntax highlighting, OMP)
+- **tmux/.tmux.conf** - Tmux config (catppuccin theme, Ctrl+Space prefix)
+- **nvim/** - Neovim config (NvChad-based)
+
 ## OS Detection
-
 - **mac**: macOS (Darwin)
-- **linux**: Any Linux distribution (Arch, Debian, Ubuntu, etc.)
+- **linux**: Any Linux distro
 
-## Adding a new dotfile
+## Adding New Dotfiles
 
-1. Mirror the path inside `stow/common/` (or `linux/`/`mac/` if OS-specific)
-2. Add the package to the relevant package list if needed
+1. Add file to `stow/common/` (or `linux/`/`mac/` for OS-specific)
+2. Add packages to `packages/` if needed
 3. Run `./setup dotfiles`
 
-## Backups
+## Backup
 
-Existing files that would conflict are moved to `~/.dotfiles-backup/<timestamp>/` before symlinking.
+Conflict files moved to `~/.dotfiles-backup/<timestamp>/` before symlinking.

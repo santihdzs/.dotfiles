@@ -7,8 +7,8 @@ echo "[install_packages] OS=$OS"
 # Linux (Arch-based)
 if [[ "$OS" == "linux" ]]; then
   # Install pacman packages
-  if [[ -f packages/arch.pacman.txt ]]; then
-    pkgs="$(grep -vE '^\s*($|#)' packages/arch.pacman.txt | tr '\n' ' ')"
+  if [[ -f packages/pacman.txt ]]; then
+    pkgs="$(grep -vE '^\s*($|#)' packages/pacman.txt | tr '\n' ' ')"
     if [[ -n "$pkgs" ]]; then
       echo "[install_packages] Installing pacman packages..."
       sudo pacman -S --needed --noconfirm $pkgs
@@ -16,8 +16,8 @@ if [[ "$OS" == "linux" ]]; then
   fi
 
   # Install AUR packages (requires yay or paru)
-  if [[ -f packages/arch.aur.txt ]]; then
-    aur_pkgs="$(grep -vE '^\s*($|#)' packages/arch.aur.txt | tr '\n' ' ')"
+  if [[ -f packages/aur.txt ]]; then
+    aur_pkgs="$(grep -vE '^\s*($|#)' packages/aur.txt | tr '\n' ' ')"
     if [[ -n "$aur_pkgs" ]]; then
       echo "[install_packages] Installing AUR packages..."
       if command -v yay >/dev/null 2>&1; then
