@@ -3,3 +3,8 @@
 
 # backup dir if ever accidentally inside repo
 .dotfiles-backup/
+
+# Neovim plugin cache (generated on first launch)
+# DO NOT COMMIT - these get downloaded automatically
+# The lazy-lock.json file SHOULD be committed (locks plugin versions)
+stow/common/nvim/lazy/

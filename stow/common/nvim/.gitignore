@@ -1,0 +1,17 @@
+# Ignore lazy.nvim plugin cache (auto-generated when nvim first opens)
+lazy/
+
+# Ignore compiled bytecode (optional, can speed up load time)
+# If you want to commit this, remove this line
+# lua/
+
+# Ignore undo history
+undo/
+
+# Ignore swap files
+*.swp
+*.swo
+*~
+
+# Ignore netrw cache
+.netrwhist

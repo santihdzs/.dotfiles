@@ -18,7 +18,12 @@ stow_dir() {
     echo "[install_dotfiles] -> $pkg (from $dir)"
 
     # Backup existing files before stowing
-    for file in "$dir/$pkg"/.* "$dir/$pkg"/*; do
+    # Use nullglob to handle empty directories gracefully
+    setopt NULL_GLOB
+    local all_files=("$dir/$pkg"/.* "$dir/$pkg"/*)
+    setopt NO_NULL_GLOB
+    
+    for file in "${all_files[@]}"; do
       [[ -e "$file" ]] || continue
       local rel="${file#$dir/$pkg/}"
       [[ "$rel" == "." || "$rel" == ".." ]] && continue
