@@ -40,7 +40,7 @@ eval "$(zoxide init zsh)"
 
 # Oh My Posh - use built-in theme (custom zen.toml has path issues with stow)
 if command -v oh-my-posh >/dev/null 2>&1; then
-  eval "$(oh-my-posh init zsh --config=jandedobbeleer)"
+  eval "$(oh-my-posh init zsh --config=bubblesextra)"
 fi
 
 # Keybindings
