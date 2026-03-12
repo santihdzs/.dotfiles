@@ -1,4 +1,5 @@
 # Paths
+export PATH="/opt/homebrew/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 
 # XDG base dirs (tidy)
@@ -10,28 +11,30 @@ export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 autoload -Uz compinit
 compinit -d "${XDG_CACHE_HOME}/zsh/zcompdump"
 
-# Antidote
-if [ -f "$HOME/.antidote/antidote.zsh" ]; then
-  source "$HOME/.antidote/antidote.zsh"
-fi
+# Oh My Zsh configuration
+export ZSH="$HOME/.oh-my-zsh"
+
+# Theme
+ZSH_THEME="gozilla"
 
 # Plugins
-if command -v antidote >/dev/null 2>&1; then
-  antidote load <<'PLUGINS'
-zsh-users/zsh-completions
-zsh-users/zsh-autosuggestions
-zsh-users/zsh-syntax-highlighting
-PLUGINS
-fi
+plugins=(git)
 
-# Starship prompt
-if command -v starship >/dev/null 2>&1; then
-  eval "$(starship init zsh)"
-fi
+# Source Oh My Zsh
+source $ZSH/oh-my-zsh.sh
 
-# aliases
+# Starship prompt (optional - comment out if using OMZ theme)
+# if command -v starship >/dev/null 2>&1; then
+#   eval "$(starship init zsh)"
+# fi
+
+# Aliases
 alias activate="source .venv/bin/activate"
 alias newvenv="python -m venv .venv"
+alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
+# Pyenv brew fix
+alias brew='env PATH="${PATH//$(pyenv root)\/shims:/}" brew'
 
 # bun
 if [ -s "$HOME/.bun/_bun" ]; then
