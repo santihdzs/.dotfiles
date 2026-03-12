@@ -1,6 +1,23 @@
+# Homebrew packages for macOS
+# Install with: brew bundle --file=~/.dotfiles/packages/mac.brew.txt
+
+# Core
 git
 stow
-zsh
-tmux
 neovim
-starship
+tmux
+
+# Zsh plugins & prompt
+antidote
+oh-my-posh
+fzf
+zoxide
+
+# Languages & runtimes
+bun
+uv
+node
+
+# CLI tools
+gh
+tree-sitter
