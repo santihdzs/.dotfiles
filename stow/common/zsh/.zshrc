@@ -29,10 +29,9 @@ source ${zsh_plugins}.zsh
 # Zoxide (smarter cd)
 eval "$(zoxide init zsh)"
 
-# Oh My Posh prompt (install with: brew install oh-my-posh)
-# Download config from: https://raw.githubusercontent.com/chriskempson/base16-shell/master/profile_helper.sh
+# Oh My Posh prompt
 if command -v oh-my-posh >/dev/null 2>&1; then
-  eval "$(oh-my-posh init zsh)"
+  eval "$(oh-my-posh init zsh --config='$HOME/.config/ohmyposh/zen.toml')"
 fi
 
 # Keybindings
