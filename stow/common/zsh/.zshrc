@@ -7,6 +7,9 @@ export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 
+# Enable autocd (typing .. or ... auto-cds)
+setopt autocd
+
 # Zsh completions
 autoload -Uz compinit
 compinit -d "${XDG_CACHE_HOME}/zsh/zcompdump"
@@ -29,29 +32,22 @@ source ${zsh_plugins}.zsh
 # Zoxide (smarter cd)
 eval "$(zoxide init zsh)"
 
-# Oh My Posh prompt
+# Oh My Posh - use built-in theme
 if command -v oh-my-posh >/dev/null 2>&1; then
-  eval "$(oh-my-posh init zsh --config='$HOME/.dotfiles/stow/common/ohmyposh/zen.toml')"
+  eval "$(oh-my-posh init zsh --config=paradox)"
 fi
 
 # Keybindings
 bindkey -e
-bindkey '^p' history-search-backward
-bindkey '^n' history-search-forward
-bindkey '^[w' kill-region
 
 # History
 HISTSIZE=5000
 HISTFILE=~/.zsh_history
 SAVEHIST=$HISTSIZE
-HISTDUP=erase
 setopt appendhistory
 setopt sharehistory
 setopt hist_ignore_space
 setopt hist_ignore_all_dups
-setopt hist_save_no_dups
-setopt hist_ignore_dups
-setopt hist_find_no_dups
 
 # Aliases
 alias vim='nvim'
