@@ -1,0 +1,44 @@
+# Oh My Posh zen theme
+version = 3
+final_space = true
+
+[secondary_prompt]
+  template = '❯❯ '
+  foreground = 'magenta'
+
+[transient_prompt]
+  template = '❯ '
+  foreground_templates = ['{{if gt .Code 0}}red{{end}}', '{{if eq .Code 0}}magenta{{end}}']
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+  newline = true
+
+  [[blocks.segments]]
+    type = 'python'
+    template = '{{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ end }}'
+    foreground = 'green'
+
+  [[blocks.segments]]
+    template = '{{ .Path }}'
+    foreground = '#8888ff'
+    type = 'path'
+    [blocks.segments.properties]
+      style = 'agnoster_short'
+      hide_root_location = true
+      max_depth = 2
+
+  [[blocks.segments]]
+    template = ' {{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end }}'
+    foreground = 'p:grey'
+    type = 'git'
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+
+  [[blocks.segments]]
+    template = '❯'
+    foreground_templates = ['{{if gt .Code 0}}red{{end}}', '{{if eq .Code 0}}magenta{{end}}']
+    type = 'text'
