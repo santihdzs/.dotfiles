@@ -1,0 +1,13 @@
+# Antidote plugins list
+# Format: user/repo or user/repo path:path
+
+# Oh My Zsh plugins
+getantidote/use-omz
+ohmyzsh path:plugins/git
+ohmyzsh path:plugins/sudo
+ohmyzsh path:plugins/command-not-found
+
+# Zsh plugins
+zsh-users/zsh-completions
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-syntax-highlighting

@@ -11,30 +11,53 @@ export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 autoload -Uz compinit
 compinit -d "${XDG_CACHE_HOME}/zsh/zcompdump"
 
-# Oh My Zsh configuration
-export ZSH="$HOME/.oh-my-zsh"
+# Antidote plugin manager
+if [ -f "$HOME/.antidote/antidote.zsh" ]; then
+  source "$HOME/.antidote/antidote.zsh"
+fi
 
-# Theme
-ZSH_THEME="gozilla"
+# Load plugins from static file (regenerate if .zsh_plugins.txt is newer)
+zsh_plugins=${ZDOTDIR:-$HOME}/.zsh_plugins
+if [[ ! ${zsh_plugins}.zsh -nt ${zsh_plugins}.txt ]]; then
+  (
+    source $HOME/.antidote/antidote.zsh
+    antidote bundle <${zsh_plugins}.txt >${zsh_plugins}.zsh
+  )
+fi
+source ${zsh_plugins}.zsh
 
-# Plugins
-plugins=(git)
+# Zoxide (smarter cd)
+eval "$(zoxide init zsh)"
 
-# Source Oh My Zsh
-source $ZSH/oh-my-zsh.sh
+# Oh My Posh prompt (install with: brew install oh-my-posh)
+# Download config from: https://raw.githubusercontent.com/chriskempson/base16-shell/master/profile_helper.sh
+if command -v oh-my-posh >/dev/null 2>&1; then
+  eval "$(oh-my-posh init zsh)"
+fi
 
-# Starship prompt (optional - comment out if using OMZ theme)
-# if command -v starship >/dev/null 2>&1; then
-#   eval "$(starship init zsh)"
-# fi
+# Keybindings
+bindkey -e
+bindkey '^p' history-search-backward
+bindkey '^n' history-search-forward
+bindkey '^[w' kill-region
+
+# History
+HISTSIZE=5000
+HISTFILE=~/.zsh_history
+SAVEHIST=$HISTSIZE
+HISTDUP=erase
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
 
 # Aliases
-alias activate="source .venv/bin/activate"
-alias newvenv="python -m venv .venv"
-alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-
-# Pyenv brew fix
-alias brew='env PATH="${PATH//$(pyenv root)\/shims:/}" brew'
+alias vim='nvim'
+alias c='clear'
+alias ls='ls --color'
 
 # bun
 if [ -s "$HOME/.bun/_bun" ]; then
@@ -42,3 +65,8 @@ if [ -s "$HOME/.bun/_bun" ]; then
 fi
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# uv (Python package manager)
+if command -v uv >/dev/null 2>&1; then
+  export UV_PYTHON="$HOME/.local/share/uv/python"
+fi
