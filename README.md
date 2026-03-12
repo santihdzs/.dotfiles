@@ -4,17 +4,17 @@ Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
 ## Usage
 ```bash
-git clone https://github.com/santihdzs/dotfiles ~/src/dotfiles
-cd ~/src/dotfiles
+git clone https://github.com/santihdzs/dotfiles ~/.dotfiles
+cd ~/.dotfiles
 ./setup
 ```
 
 ## Modes
 ```bash
 ./setup              # full setup (default)
-./setup bootstrap    # tools only (antidote, TPM, bun)
+./setup bootstrap    # tools only (TPM, bun)
 ./setup packages     # install packages only
-./setup dotfiles     # stow symlinks only
+./setup dotfiles    # stow symlinks only
 ```
 
 ## Structure
@@ -22,19 +22,19 @@ cd ~/src/dotfiles
 dotfiles/
 |-- setup                  # entrypoint
 |-- packages/
-|   |-- arch.pacman.txt    # pacman packages (Linux)
-|   |-- arch.aur.txt       # AUR packages (Linux)
-|   +-- mac.brew.txt       # homebrew packages (macOS)
+|   |-- arch.pacman.txt   # pacman packages (Linux)
+|   |-- arch.aur.txt      # AUR packages (Linux)
+|   +-- mac.brew.txt      # homebrew packages (macOS)
 |-- scripts/
-|   |-- bootstrap          # antidote, TPM, bun
+|   |-- bootstrap          # TPM, bun
 |   |-- install_packages   # pacman/brew/AUR
 |   |-- install_dotfiles   # stow symlinks
 |   +-- helpers/
-|       +-- os_detect      # prints: linux | mac
+|       +-- os_detect     # prints: linux | mac
 +-- stow/
-    |-- common/            # applied on all OS
-    |-- linux/             # Linux-specific
-    +-- mac/              # macOS-specific
+    |-- common/           # applied on all OS
+    |-- linux/            # Linux-specific
+    +-- mac/             # macOS-specific
 ```
 
 ## OS Detection

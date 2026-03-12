@@ -6,15 +6,7 @@ OS="$("$ROOT/scripts/helpers/os_detect")"
 
 echo "[bootstrap] OS=$OS"
 
-# antidote (zsh plugin manager) - works on both
-if [[ ! -d "$HOME/.antidote" ]]; then
-  echo "[bootstrap] Installing antidote..."
-  git clone --depth=1 https://github.com/mattmc3/antidote.git "$HOME/.antidote"
-else
-  echo "[bootstrap] antidote already installed"
-fi
-
-# tmux plugin manager (TPM) - works on both
+# tmux plugin manager (TPM)
 if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
   echo "[bootstrap] Installing tmux TPM..."
   mkdir -p "$HOME/.tmux/plugins"
@@ -23,7 +15,7 @@ else
   echo "[bootstrap] TPM already installed"
 fi
 
-# bun - works on both
+# bun
 if [[ ! -d "$HOME/.bun" ]]; then
   echo "[bootstrap] Installing bun..."
   if ! command -v unzip >/dev/null 2>&1; then
